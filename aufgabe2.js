@@ -89,4 +89,4 @@ function convertingOriginal(img) {
     return "original_" + img;
 }
 app.use(express.static('uploads'));
-app.listen(3000);
+app.listen(process.env.PORT || 3000);

@@ -93,7 +93,7 @@ function convertingOriginal(img: string){
 
 app.use(express.static('uploads'));
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 
 
