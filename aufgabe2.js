@@ -12,28 +12,41 @@ var store = multer.diskStorage({
         callback(null, __dirname + '/uploads');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + "_" + file.originalname);
+        if (file.mimetype.indexOf("image") > -1) {
+            cb(null, Date.now() + "_" + file.originalname);
+        }
+        else {
+            cb({
+                message: "Not a Image File",
+                name: "error"
+            }, "null");
+        }
     }
 });
 var upload = multer({ storage: store });
 app.post('/api/file', upload.single('file'), function (req, res, next) {
-    var filename = req.file.filename;
-    var smallFile = convertingSmall(filename);
-    var mediumFile = convertingMedium(filename);
-    var largeFile = convertingLarge(filename);
-    var thumbnailFile = convertingThumbnail(filename);
-    var originalFile = convertingOriginal(filename);
-    res.json({
-        data: {
-            images: {
-                "small": "http://localhost:3000/converted/" + smallFile,
-                "medium": "http://localhost:3000/converted/" + mediumFile,
-                "large": "http://localhost:3000/converted/" + largeFile,
-                "thumbnail": "http://localhost:3000/converted/" + thumbnailFile,
-                "original": "http://localhost:3000/converted/" + originalFile,
+    try {
+        var filename = req.file.filename;
+        var smallFile = convertingSmall(filename);
+        var mediumFile = convertingMedium(filename);
+        var largeFile = convertingLarge(filename);
+        var thumbnailFile = convertingThumbnail(filename);
+        var originalFile = convertingOriginal(filename);
+        res.json({
+            data: {
+                images: {
+                    "small": "http://localhost:3000/converted/" + smallFile,
+                    "medium": "http://localhost:3000/converted/" + mediumFile,
+                    "large": "http://localhost:3000/converted/" + largeFile,
+                    "thumbnail": "http://localhost:3000/converted/" + thumbnailFile,
+                    "original": "http://localhost:3000/converted/" + originalFile,
+                }
             }
-        }
-    });
+        });
+    }
+    catch (ex) {
+        res.status(400).send(ex);
+    }
 });
 function convertingSmall(img) {
     sharp_1.default(__dirname + '/uploads/' + img)
