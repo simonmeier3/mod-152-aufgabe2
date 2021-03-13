@@ -35,11 +35,11 @@ app.post('/api/file', upload.single('file'), (req,res,next ) => {
         res.json({
             data: {
                 images: {
-                    "small": "http://localhost:3000/converted/" + smallFile,
-                    "medium": "http://localhost:3000/converted/" + mediumFile,
-                    "large": "http://localhost:3000/converted/" + largeFile,
-                    "thumbnail": "http://localhost:3000/converted/" + thumbnailFile,
-                    "original": "http://localhost:3000/converted/" + originalFile,
+                    "small": "https://polar-thicket-37960.herokuapp.com/converted/" + smallFile,
+                    "medium": "https://polar-thicket-37960.herokuapp.com/converted/" + mediumFile,
+                    "large": "https://polar-thicket-37960.herokuapp.com/converted/" + largeFile,
+                    "thumbnail": "https://polar-thicket-37960.herokuapp.com/converted/" + thumbnailFile,
+                    "original": "https://polar-thicket-37960.herokuapp.com/converted/" + originalFile,
                 }
             }
         });
