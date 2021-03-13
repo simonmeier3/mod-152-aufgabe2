@@ -18,12 +18,22 @@ var store = multer.diskStorage({
 var upload = multer({ storage: store });
 app.post('/api/file', upload.single('file'), function (req, res, next) {
     var filename = req.file.filename;
-    convertingSmall(filename);
-    convertingMedium(filename);
-    convertingLarge(filename);
-    convertingThumbnail(filename);
-    convertingOriginal(filename);
-    res.json("Done");
+    var smallFile = convertingSmall(filename);
+    var mediumFile = convertingMedium(filename);
+    var largeFile = convertingLarge(filename);
+    var thumbnailFile = convertingThumbnail(filename);
+    var originalFile = convertingOriginal(filename);
+    res.json({
+        data: {
+            images: {
+                "small": "http://localhost:3000/converted/" + smallFile,
+                "medium": "http://localhost:3000/converted/" + mediumFile,
+                "large": "http://localhost:3000/converted/" + largeFile,
+                "thumbnail": "http://localhost:3000/converted/" + thumbnailFile,
+                "original": "http://localhost:3000/converted/" + originalFile,
+            }
+        }
+    });
 });
 function convertingSmall(img) {
     sharp_1.default(__dirname + '/uploads/' + img)
@@ -31,6 +41,7 @@ function convertingSmall(img) {
         fit: 'contain'
     })
         .toFile(__dirname + '/uploads/converted/small_' + img);
+    return "small_" + img;
 }
 function convertingMedium(img) {
     sharp_1.default(__dirname + '/uploads/' + img)
@@ -38,6 +49,7 @@ function convertingMedium(img) {
         fit: 'contain'
     })
         .toFile(__dirname + '/uploads/converted/medium_' + img);
+    return "medium_" + img;
 }
 function convertingLarge(img) {
     sharp_1.default(__dirname + '/uploads/' + img)
@@ -45,6 +57,7 @@ function convertingLarge(img) {
         fit: 'contain'
     })
         .toFile(__dirname + '/uploads/converted/large_' + img);
+    return "large_" + img;
 }
 function convertingThumbnail(img) {
     sharp_1.default(__dirname + '/uploads/' + img)
@@ -52,6 +65,7 @@ function convertingThumbnail(img) {
         fit: 'contain'
     })
         .toFile(__dirname + '/uploads/converted/thumbnail_' + img);
+    return "thumbnail_" + img;
 }
 function convertingOriginal(img) {
     sharp_1.default(__dirname + '/uploads/' + img)
@@ -59,5 +73,7 @@ function convertingOriginal(img) {
         fit: 'contain'
     })
         .toFile(__dirname + '/uploads/converted/original_' + img);
+    return "original_" + img;
 }
+app.use(express.static('uploads'));
 app.listen(3000);
