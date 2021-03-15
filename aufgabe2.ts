@@ -3,6 +3,7 @@ import multer = require("multer");
 import sharp from "sharp";
 
 let app = express();
+const imageUrl = "https://polar-thicket-37960.herokuapp.com/converted/";
 
 let store = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -35,11 +36,11 @@ app.post('/api/file', upload.single('file'), (req,res,next ) => {
         res.json({
             data: {
                 images: {
-                    "small": "https://polar-thicket-37960.herokuapp.com/converted/" + smallFile,
-                    "medium": "https://polar-thicket-37960.herokuapp.com/converted/" + mediumFile,
-                    "large": "https://polar-thicket-37960.herokuapp.com/converted/" + largeFile,
-                    "thumbnail": "https://polar-thicket-37960.herokuapp.com/converted/" + thumbnailFile,
-                    "original": "https://polar-thicket-37960.herokuapp.com/converted/" + originalFile,
+                    "small": imageUrl + smallFile,
+                    "medium": imageUrl + mediumFile,
+                    "large": imageUrl + largeFile,
+                    "thumbnail": imageUrl + thumbnailFile,
+                    "original": imageUrl + originalFile,
                 }
             }
         });
